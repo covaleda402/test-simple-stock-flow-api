@@ -6,18 +6,29 @@ namespace App\Infrastructure\Persistence\Model;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ProductModel extends Model
+final class ProductModel extends Model
 {
-    protected $table = 'products';
-    
-    // Usamos UUIDs/Strings según el contrato, no IDs autoincrementales
+    protected $table = 'product';
+
     public $incrementing = false;
     protected $keyType = 'string';
-    
+    public $timestamps = false;
+
     protected $fillable = [
         'id',
         'name',
         'price',
-        'stock'
+        'stock',
+        'category_id',
+        'image_key',
+        'deleted_at',
+        'version',
+    ];
+
+    protected $casts = [
+        'price' => 'string',
+        'stock' => 'integer',
+        'version' => 'integer',
+        'deleted_at' => 'datetime',
     ];
 }

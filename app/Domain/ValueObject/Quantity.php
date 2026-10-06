@@ -4,19 +4,28 @@ declare(strict_types=1);
 
 namespace App\Domain\ValueObject;
 
-use InvalidArgumentException;
+use App\Domain\Exception\BusinessRuleValidationException;
 
 final class Quantity
 {
     private int $value;
 
+    /**
+     * @param int $value
+     * @throws BusinessRuleValidationException
+     */
     public function __construct(int $value)
     {
-        if ($value < 0) {
-            throw new InvalidArgumentException("La cantidad de stock no puede ser negativa.");
+        if ($value <= 0) {
+            throw new BusinessRuleValidationException("La cantidad debe ser mayor a cero.");
         }
 
         $this->value = $value;
+    }
+
+    public static function of(int $value): self
+    {
+        return new self($value);
     }
 
     public function value(): int
@@ -29,19 +38,13 @@ final class Quantity
         return new self($this->value + $other->value());
     }
 
-    public function subtract(Quantity $other): self
-    {
-        $newValue = $this->value - $other->value();
-        
-        if ($newValue < 0) {
-            throw new InvalidArgumentException("Stock insuficiente para realizar la sustracción.");
-        }
-
-        return new self($newValue);
-    }
-
     public function equals(Quantity $other): bool
     {
         return $this->value === $other->value();
+    }
+
+    public function __toString(): string
+    {
+        return (string) $this->value;
     }
 }

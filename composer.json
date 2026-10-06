@@ -18,7 +18,7 @@
         "laravel/pint": "^1.27",
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^8.6",
-        "phpunit/phpunit": "^12.5.12"
+        "phpunit/phpunit": "^11.0"
     },
     "autoload": {
         "psr-4": {
@@ -74,6 +74,10 @@
         }
     },
     "config": {
+        "platform-check": false,
+        "platform": {
+            "php": "8.3.35"
+        },
         "optimize-autoloader": true,
         "preferred-install": "dist",
         "sort-packages": true,
