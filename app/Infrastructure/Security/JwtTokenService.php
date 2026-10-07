@@ -16,7 +16,12 @@ final class JwtTokenService implements TokenGeneratorInterface
 
     public function __construct(?string $signingKey = null, int $leewaySeconds = 30)
     {
-        $this->signingKey = $signingKey ?? (string) env('JWT_SIGNING_KEY', 'secret-stockflow-signing-key-123456');
+        $resolvedKey = $signingKey ?? (string) env('JWT_SIGNING_KEY', '');
+        if (trim($resolvedKey) === '') {
+            throw new \RuntimeException('JWT_SIGNING_KEY environment variable is not configured.');
+        }
+
+        $this->signingKey = $resolvedKey;
         $this->leewaySeconds = $leewaySeconds;
     }
 

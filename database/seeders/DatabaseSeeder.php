@@ -15,7 +15,11 @@ class DatabaseSeeder extends Seeder
         $passwordHasher = app(PasswordHasherInterface::class);
 
         $adminEmail = env('ADMIN_EMAIL', 'admin@stockflow.local');
-        $adminPassword = env('ADMIN_PASSWORD', 'admin123456');
+        $adminPassword = (string) env('ADMIN_PASSWORD', '');
+
+        if (trim($adminPassword) === '') {
+            throw new \RuntimeException('ADMIN_PASSWORD environment variable is required for database seeding.');
+        }
 
         $normalized = User::normalizeUsername($adminEmail);
 
